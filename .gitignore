@@ -1,0 +1,39 @@
+# --- Rust build output -------------------------------------------------
+target/
+**/*.rs.bk
+*.pdb
+
+# --- Model weights (~1.4 GB, fetched separately, never in git) ---------
+/models/*
+!/models/README.md
+
+# --- Python ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# --- Runtime state -----------------------------------------------------
+*.log
+*.pid
+*.wav
+*.tmp
+
+# Emitted by the MSVC linker when build.rs embeds manifest.xml
+*.exe.manifest
+
+# --- Secrets / local overrides ----------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- Editors / OS ------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
