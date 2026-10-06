@@ -40,10 +40,11 @@ use windows::Win32::UI::HiDpi::{
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefWindowProcW, GetSystemMetrics, KillTimer, MA_NOACTIVATE, RegisterClassW,
     SM_CXSCREEN, SM_CYSCREEN, SPI_GETCLIENTAREAANIMATION, SPI_GETWORKAREA, SW_HIDE,
-    SW_SHOWNOACTIVATE, SYSTEM_PARAMETERS_INFO_UPDATE_FLAGS, SetTimer, ShowWindow,
-    SystemParametersInfoW, ULW_ALPHA, UpdateLayeredWindow, WM_DPICHANGED, WM_LBUTTONDOWN,
+    SW_SHOWNOACTIVATE, SYSTEM_PARAMETERS_INFO_UPDATE_FLAGS, SetTimer, SetWindowPos,
+    ShowWindow, SystemParametersInfoW, ULW_ALPHA, UpdateLayeredWindow, WM_DPICHANGED,
+    WM_LBUTTONDOWN,
     WM_MOUSEACTIVATE, WM_TIMER, WNDCLASSW, WS_EX_LAYERED, WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW,
-    WS_EX_TOPMOST, WS_POPUP,
+    WS_EX_TOPMOST, WS_POPUP, HWND_TOPMOST, SWP_NOMOVE, SWP_NOSIZE, SWP_NOACTIVATE,
 };
 use windows::core::{PCWSTR, w};
 
@@ -936,8 +937,20 @@ fn reveal() {
         o.hwnd
     };
     unsafe {
-        let _ = SetTimer(hwnd_of(hwnd), TIMER_ID, TIMER_MS, None);
-        let _ = ShowWindow(hwnd_of(hwnd), SW_SHOWNOACTIVATE);
+        let hwnd = hwnd_of(hwnd);
+
+        let _ = SetWindowPos(
+            hwnd,
+            HWND_TOPMOST,
+            0,
+            0,
+            0,
+            0,
+            SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE,
+        );
+
+        let _ = SetTimer(hwnd, TIMER_ID, TIMER_MS, None);
+        let _ = ShowWindow(hwnd, SW_SHOWNOACTIVATE);
     }
 }
 
